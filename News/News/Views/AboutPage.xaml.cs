@@ -12,10 +12,10 @@ namespace News.Views
 {
     public partial class AboutPage : ContentPage
     {
-        List<NewsGroup> newsApis = new List<NewsGroup>();
         public AboutPage()
         {
             InitializeComponent();
         }
+
     }
 }

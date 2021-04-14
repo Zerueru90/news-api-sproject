@@ -5,4 +5,85 @@
     <ContentPage.Content>
         <WebView Source="{Binding .}" />
     </ContentPage.Content>
+
+    <StackLayout>
+        <ListView x:Name="groupedListView" IsGroupingEnabled="true" HasUnevenRows="true" >
+            <ListView.GroupHeaderTemplate>
+                <DataTemplate>
+                    <ViewCell Height="40">
+                        <StackLayout HorizontalOptions="FillAndExpand" HeightRequest="40" BackgroundColor="White" 
+                                 Padding="5" Orientation="Horizontal">
+                            <Label FontSize="16" TextColor="Blue" VerticalOptions="Center" Text="{Binding Key}" />
+
+
+                        </StackLayout>
+
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.GroupHeaderTemplate>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        
+
+                        <StackLayout HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
+
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="{Binding Title}" />
+                                <Label Text="{Binding Description}" />
+                            </StackLayout>
+
+                            <Label Text="{Binding DateTime, StringFormat='{0}'}" HorizontalOptions="Start"/>
+
+                        </StackLayout>
+
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>
+
+
+
+
+
+
+
+    <!--Denna funkar med konstruktorn med newsgroup i parametern-->
+    <!--<StackLayout>
+        <ListView x:Name="groupedListView" IsGroupingEnabled="true" HasUnevenRows="true" >
+            <ListView.GroupHeaderTemplate>
+                <DataTemplate>
+                    <ViewCell Height="40">
+                        <StackLayout HorizontalOptions="FillAndExpand" HeightRequest="40" BackgroundColor="White" 
+                                 Padding="5" Orientation="Horizontal">
+                            <Label FontSize="16" TextColor="Blue" VerticalOptions="Center" Text="{Binding Key}" />
+
+
+                        </StackLayout>
+
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.GroupHeaderTemplate>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        
+
+                        <StackLayout HorizontalOptions="Center" VerticalOptions="CenterAndExpand">
+
+                            <StackLayout Orientation="Horizontal">
+                                <Label Text="{Binding Title}" />
+                                <Label Text="{Binding Description}" />
+                            </StackLayout>
+
+                            <Label Text="{Binding DateTime, StringFormat='{0}'}" HorizontalOptions="Start"/>
+
+                        </StackLayout>
+
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </StackLayout>-->
 </ContentPage>
