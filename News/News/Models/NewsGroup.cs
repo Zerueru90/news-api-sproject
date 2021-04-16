@@ -21,8 +21,8 @@ namespace News.Models
         public NewsCacheKey (NewsCategory category, DateTime dt)
         {
             this.category = category;
-            timewindow = DateTime.Now.ToString("yyyy-MM-dd-HH-mm"); //Cache expiration every minute
-//            timewindow = DateTime.Now.ToString("yyyy-MM-dd-HH"); //Cache expiration every hour
+            //timewindow = DateTime.Now.ToString("yyyy-MM-dd-HH-mm"); //Cache expiration every minute
+            timewindow = DateTime.Now.ToString("yyyy-MM-dd-HH"); //Cache expiration every hour
         }
         static string fname(string name)
         {

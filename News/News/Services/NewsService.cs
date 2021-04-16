@@ -16,6 +16,7 @@ namespace News.Services
     {
 
         //Here is where you lift in your Service code from Part A
+        ConcurrentDictionary<string, NewsGroup> keyValues = new ConcurrentDictionary<string, NewsGroup>();
         private static readonly string apiKey = "11b22480c851414b99c85de1b9afc64a";
 
         public async Task<NewsGroup> GetNewsAsync(NewsCategory category)
@@ -23,7 +24,7 @@ namespace News.Services
 
 //#if UseNewsApiSample      
             NewsApiData nd = await NewsApiSampleData.GetNewsApiSampleAsync(category);
-
+            NewsCacheKey newsCacheKey = new NewsCacheKey(category, DateTime.Now);
 //#else
             //https://newsapi.org/docs/endpoints/top-headlines
             var uri = $"https://newsapi.org/v2/top-headlines?country=se&category={category}&apiKey={apiKey}";
@@ -46,6 +47,17 @@ namespace News.Services
                     UrlToImage = x.UrlToImage
                 }).ToList()
             };
+
+            //if (newsCacheKey.CacheExist)
+            //{
+            //    newNewsGroup = NewsGroup.Deserialize(newsCacheKey.FileName);
+            //}
+            //else if (!newsCacheKey.CacheExist)
+            //{
+            //    NewsGroup.Serialize(newNewsGroup, newsCacheKey.FileName);
+            //    keyValues.TryAdd(newsCacheKey.Key, newNewsGroup);
+            //}
+
 
             return newNewsGroup;
         }

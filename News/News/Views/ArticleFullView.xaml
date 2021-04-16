@@ -5,7 +5,8 @@
     <ContentPage.Content>
         <StackLayout>
         <ActivityIndicator x:Name="activityBar" Color="Red" VerticalOptions="CenterAndExpand" IsVisible="false"/>
-
+        
+        
         <WebView Source="{Binding .}" VerticalOptions="FillAndExpand" HorizontalOptions="FillAndExpand" Navigating="WebView_Navigating" Navigated="WebView_Navigated"/>
         </StackLayout>
     </ContentPage.Content>

@@ -35,7 +35,7 @@ namespace News.Views
         private async Task LoadNews()
         {
             this.activityBar.IsRunning = true;
-            await Task.Delay(3000);
+            //await Task.Delay(3000);
             newsService = new NewsService();
             Task<NewsGroup> task = null;
             switch (this.Title)
