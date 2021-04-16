@@ -22,22 +22,11 @@ namespace News.Views
             };
         }
 
-        protected async override void OnAppearing()
+        protected override void OnAppearing()
         {
             base.OnAppearing();
 
         }
 
-        private void WebView_Navigating(object sender, WebNavigatingEventArgs e)
-        {
-
-            this.activityBar.IsRunning = true;
-        }
-
-        private void WebView_Navigated(object sender, WebNavigatedEventArgs e)
-        {
-
-            this.activityBar.IsRunning = false;
-        }
     }
 }

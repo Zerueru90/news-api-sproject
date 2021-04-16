@@ -23,17 +23,16 @@ namespace News.Services
         {
 
 //#if UseNewsApiSample      
-            NewsApiData nd = await NewsApiSampleData.GetNewsApiSampleAsync(category);
+            //NewsApiData nd = await NewsApiSampleData.GetNewsApiSampleAsync(category);
             NewsCacheKey newsCacheKey = new NewsCacheKey(category, DateTime.Now);
 //#else
             //https://newsapi.org/docs/endpoints/top-headlines
             var uri = $"https://newsapi.org/v2/top-headlines?country=se&category={category}&apiKey={apiKey}";
 
-
             //Recommend to use Newtonsoft Json Deserializer as it works best with Android
-            //var webclient = new WebClient();
-            //var json = await webclient.DownloadStringTaskAsync(uri);
-            //NewsApiData nd = Newtonsoft.Json.JsonConvert.DeserializeObject<NewsApiData>(json);
+            var webclient = new WebClient();
+            var json = await webclient.DownloadStringTaskAsync(uri);
+            NewsApiData nd = Newtonsoft.Json.JsonConvert.DeserializeObject<NewsApiData>(json);
 
             var newNewsGroup = new NewsGroup
             {

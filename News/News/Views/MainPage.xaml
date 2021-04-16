@@ -7,7 +7,6 @@
     <TabbedPage.Children>
         <views:AboutPage />
         <views:ConsolePage />
-        <views:ArticleView/>
     </TabbedPage.Children>
 
 </TabbedPage>

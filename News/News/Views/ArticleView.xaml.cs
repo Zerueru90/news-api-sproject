@@ -1,7 +1,9 @@
 ﻿using News.Models;
 using News.Services;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using System.Web;
 using Xamarin.Essentials;
@@ -14,60 +16,60 @@ namespace News.Views
         //Here is where you show the news in Full page
         NewsService newsService;
 
-        public ActivityIndicator activityIndicator => activityBar;
         public ArticleView()
         {
             InitializeComponent();
-
         }
 
         protected override void OnAppearing()
         {
-            
              base.OnAppearing();
-
              xHeadLines.Text = $"Todays {Title} Headlines";
-
              MainThread.BeginInvokeOnMainThread(async () => { await LoadNews(); });
-         
         }
 
         private async Task LoadNews()
         {
             this.activityBar.IsRunning = true;
-            //await Task.Delay(3000);
+            await Task.Delay(3000);
             newsService = new NewsService();
-            Task<NewsGroup> task = null;
-            switch (this.Title)
+            NewsGroup task = null;
+
+            try
             {
-                case "Business": task = Task.Run(async () => await newsService.GetNewsAsync(NewsCategory.business));
-                    await task;
-                    break;
-                case "Entertainment": task = Task.Run(async () => await newsService.GetNewsAsync(NewsCategory.entertainment));
-                    await task;
-                    break;
-                case "General": task = Task.Run(async () => await newsService.GetNewsAsync(NewsCategory.general));
-                    await task;
-                    break;
-                case "Health": task = Task.Run(async () => await newsService.GetNewsAsync(NewsCategory.health));
-                    await task;
-                    break;
-                case "Science": task = Task.Run(async () => await newsService.GetNewsAsync(NewsCategory.science));
-                    await task;
-                    break;
-                case "Sports": task = Task.Run(async () => await newsService.GetNewsAsync(NewsCategory.sports));
-                    await task;
-                    break;
-                case "Technology": task = Task.Run(async () => await newsService.GetNewsAsync(NewsCategory.technology));
-                    await task;
-                    break;
-                default:
-                    break;
+                switch (this.Title)
+                {
+                    case "Business":
+                        task = await newsService.GetNewsAsync(NewsCategory.business);
+                        break;
+                    case "Entertainment":
+                        task = await newsService.GetNewsAsync(NewsCategory.entertainment);
+                        break;
+                    case "General":
+                        task = await newsService.GetNewsAsync(NewsCategory.general);
+                        break;
+                    case "Health":
+                        task = await newsService.GetNewsAsync(NewsCategory.health);
+                        break;
+                    case "Science":
+                        task = await newsService.GetNewsAsync(NewsCategory.science);
+                        break;
+                    case "Sports":
+                        task = await newsService.GetNewsAsync(NewsCategory.sports);
+                        break;
+                    case "Technology":
+                        task = await newsService.GetNewsAsync(NewsCategory.technology);
+                        break;
+                    default:
+                        break;
+                }
             }
-            var newsGroup = task.Result;
-
-            var groupedNews = newsGroup.Articles.GroupBy(x => x.DateTime).ToList();
-
+            catch (WebException ex)
+            {
+                await DisplayAlert("Error Message", ex.ToString(), "Cancel");
+            }
+            
+            var groupedNews = task.Articles.GroupBy(x => x.DateTime).ToList();
             groupedListView.ItemsSource = groupedNews;
             this.activityBar.IsRunning = false;
         }
@@ -83,7 +85,5 @@ namespace News.Views
         {
             await LoadNews();
         }
-
-
     }
 }
