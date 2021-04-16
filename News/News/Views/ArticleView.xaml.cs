@@ -1,6 +1,10 @@
 ﻿using News.Models;
+using News.Services;
+using System;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 
 namespace News.Views
@@ -8,27 +12,78 @@ namespace News.Views
     public partial class ArticleView : ContentPage
     {
         //Here is where you show the news in Full page
-        public ListView Something;
-        public ArticleView(/*NewsGroup newsGroup*/)
+        NewsService newsService;
+
+        public ActivityIndicator activityIndicator => activityBar;
+        public ArticleView()
         {
             InitializeComponent();
 
-            //var grouped = newsGroup.Articles.OrderBy(x => x.DateTime).GroupBy(x => x.DateTime);
-            //groupedListView.ItemsSource = grouped;
         }
-        public ArticleView(string Url)
+
+        protected override void OnAppearing()
         {
-            InitializeComponent();
-            BindingContext = new UrlWebViewSource
+            
+             base.OnAppearing();
+
+             xHeadLines.Text = $"Todays {Title} Headlines";
+
+             MainThread.BeginInvokeOnMainThread(async () => { await LoadNews(); });
+         
+        }
+
+        private async Task LoadNews()
+        {
+            this.activityBar.IsRunning = true;
+            await Task.Delay(3000);
+            newsService = new NewsService();
+            Task<NewsGroup> task = null;
+            switch (this.Title)
             {
-                Url = HttpUtility.UrlDecode(Url)
-            };
-            Something = groupedListView;
+                case "Business": task = Task.Run(async () => await newsService.GetNewsAsync(NewsCategory.business));
+                    await task;
+                    break;
+                case "Entertainment": task = Task.Run(async () => await newsService.GetNewsAsync(NewsCategory.entertainment));
+                    await task;
+                    break;
+                case "General": task = Task.Run(async () => await newsService.GetNewsAsync(NewsCategory.general));
+                    await task;
+                    break;
+                case "Health": task = Task.Run(async () => await newsService.GetNewsAsync(NewsCategory.health));
+                    await task;
+                    break;
+                case "Science": task = Task.Run(async () => await newsService.GetNewsAsync(NewsCategory.science));
+                    await task;
+                    break;
+                case "Sports": task = Task.Run(async () => await newsService.GetNewsAsync(NewsCategory.sports));
+                    await task;
+                    break;
+                case "Technology": task = Task.Run(async () => await newsService.GetNewsAsync(NewsCategory.technology));
+                    await task;
+                    break;
+                default:
+                    break;
+            }
+            var newsGroup = task.Result;
+
+            var groupedNews = newsGroup.Articles.GroupBy(x => x.DateTime).ToList();
+
+            groupedListView.ItemsSource = groupedNews;
+            this.activityBar.IsRunning = false;
         }
 
-        // De enda denna sida måste göra är att ta emot Url strängen och sen även kanske visa en viss titel som i Lektion 19 Övning WebViewsExercisePage
+        private async void groupedListView_ItemTapped(object sender, ItemTappedEventArgs e)
+        {
+            NewsItem item = (NewsItem)e.Item;
+
+            await Navigation.PushAsync(new ArticleFullView(item.Url));
+        }
+
+        private async void Button_Clicked(object sender, System.EventArgs e)
+        {
+            await LoadNews();
+        }
 
 
-      
     }
 }
