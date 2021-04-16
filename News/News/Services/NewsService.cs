@@ -47,16 +47,15 @@ namespace News.Services
                 }).ToList()
             };
 
-            //if (newsCacheKey.CacheExist)
-            //{
-            //    newNewsGroup = NewsGroup.Deserialize(newsCacheKey.FileName);
-            //}
-            //else if (!newsCacheKey.CacheExist)
-            //{
-            //    NewsGroup.Serialize(newNewsGroup, newsCacheKey.FileName);
-            //    keyValues.TryAdd(newsCacheKey.Key, newNewsGroup);
-            //}
-
+            if (newsCacheKey.CacheExist)
+            {
+                newNewsGroup = NewsGroup.Deserialize(newsCacheKey.FileName);
+            }
+            else if (!newsCacheKey.CacheExist)
+            {
+                NewsGroup.Serialize(newNewsGroup, newsCacheKey.FileName);
+                keyValues.TryAdd(newsCacheKey.Key, newNewsGroup);
+            }
 
             return newNewsGroup;
         }
