@@ -13,7 +13,6 @@ namespace News.Views
 {
     public partial class ArticleView : ContentPage
     {
-        //Here is where you show the news in Full page
         NewsService newsService;
 
         public ArticleView()
